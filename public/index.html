@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>三江县人民医院 - 意见反馈</title>
+<link rel="icon" href="/logo.png" type="image/png">    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --primary-bg: #F8FAFC;
+            --active-scale: 0.98;
+        }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; 
+            background-color: var(--primary-bg);
+            color: #334155;
+            -webkit-font-smoothing: antialiased;
+            overscroll-behavior-y: none;
+            user-select: none;
+        }
+
+        ::-webkit-scrollbar { display: none; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        [v-cloak] { display: none !important; }
+
+        .tap-card { 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            will-change: transform, opacity;
+            cursor: pointer;
+        }
+        .tap-card:active { 
+            transform: scale(var(--active-scale)); 
+            opacity: 0.9;
+        }
+
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .back-button {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.1),
+                0 1px 2px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transition: left 0.5s ease;
+            pointer-events: none;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.15),
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            transform: translateY(-1px) scale(1.05);
+        }
+
+        .back-button:hover::before {
+            left: 100%;
+        }
+
+        .back-button:active {
+            transform: translateY(0) scale(0.98);
+            transition: transform 0.1s ease;
+            box-shadow: 
+                0 2px 6px rgba(0, 0, 0, 0.12),
+                0 1px 2px rgba(0, 0, 0, 0.08);
+        }
+
+        .back-button:hover .back-icon {
+            transform: translateX(-2px);
+        }
+
+        .back-button:active .back-icon {
+            transform: translateX(2px);
+        }
+
+        .back-icon {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #475569;
+            font-size: 14px;
+            font-weight: 600;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .back-button:hover .back-icon {
+            color: #1e293b;
+        }
+
+        .back-button.theme-emerald:hover {
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+            border-color: rgba(16, 185, 129, 0.2);
+            box-shadow: 
+                0 4px 12px rgba(16, 185, 129, 0.15),
+                0 2px 4px rgba(16, 185, 129, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .back-button.theme-emerald:hover .back-icon {
+            color: #065f46;
+        }
+
+        .back-button.theme-orange:hover {
+            background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
+            border-color: rgba(249, 115, 22, 0.2);
+            box-shadow: 
+                0 4px 12px rgba(249, 115, 22, 0.15),
+                0 2px 4px rgba(249, 115, 22, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .back-button.theme-orange:hover .back-icon {
+            color: #7c2d12;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% {
+                box-shadow: 
+                    0 1px 3px rgba(0, 0, 0, 0.1),
+                    0 1px 2px rgba(0, 0, 0, 0.06),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                    0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+            50% {
+                box-shadow: 
+                    0 1px 3px rgba(0, 0, 0, 0.1),
+                    0 1px 2px rgba(0, 0, 0, 0.06),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                    0 0 0 8px rgba(16, 185, 129, 0);
+            }
+        }
+
+        @keyframes buttonPulseOrange {
+            0%, 100% {
+                box-shadow: 
+                    0 1px 3px rgba(0, 0, 0, 0.1),
+                    0 1px 2px rgba(0, 0, 0, 0.06),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                    0 0 0 0 rgba(249, 115, 22, 0.4);
+            }
+            50% {
+                box-shadow: 
+                    0 1px 3px rgba(0, 0, 0, 0.1),
+                    0 1px 2px rgba(0, 0, 0, 0.06),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                    0 0 0 8px rgba(249, 115, 22, 0);
+            }
+        }
+
+        .back-button:active {
+            animation: longPressGlow 0.3s ease-out;
+        }
+
+        @keyframes longPressGlow {
+            0% {
+                box-shadow: 
+                    0 2px 6px rgba(0, 0, 0, 0.12),
+                    0 1px 2px rgba(0, 0, 0, 0.08);
+            }
+            50% {
+                box-shadow: 
+                    0 2px 6px rgba(0, 0, 0, 0.12),
+                    0 1px 2px rgba(0, 0, 0, 0.08),
+                    0 0 20px rgba(16, 185, 129, 0.3);
+            }
+            100% {
+                box-shadow: 
+                    0 2px 6px rgba(0, 0, 0, 0.12),
+                    0 1px 2px rgba(0, 0, 0, 0.08);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .back-button {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+            }
+            
+            .back-icon {
+                font-size: 12px;
+            }
+            
+            .nav-glass h2 {
+                font-size: 16px;
+            }
+        }
+
+        @media (prefers-contrast: high) {
+            .back-button {
+                border-width: 2px;
+                border-color: #1e293b;
+            }
+            
+            .back-icon {
+                color: #0f172a;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .back-button,
+            .back-button::before,
+            .back-icon {
+                transition: none;
+            }
+            
+            .back-button:hover {
+                transform: none;
+            }
+        }
+
+        .page-enter-active, .page-leave-active { transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
+        .page-enter-from { opacity: 0; transform: translateX(10px); }
+        .page-leave-to { opacity: 0; transform: translateX(-5px); }
+        
+        .drawer-enter-active, .drawer-leave-active { transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); }
+        .drawer-enter-from, .drawer-leave-to { transform: translateY(100%); }
+
+        input:focus, textarea:focus { 
+            outline: none; 
+        }
+        @media (max-width: 768px) {
+            .text-xs { font-size: 14px !important; line-height: 1.5 !important; }
+            .text-sm { font-size: 16px !important; line-height: 1.5 !important; }
+            .text-base { font-size: 17px !important; line-height: 1.6 !important; }
+            .text-lg { font-size: 19px !important; line-height: 1.6 !important; }
+            .text-xl { font-size: 22px !important; line-height: 1.6 !important; }
+            .text-2xl { font-size: 26px !important; line-height: 1.7 !important; }
+            .text-3xl { font-size: 32px !important; line-height: 1.7 !important; }
+            .text-slate-400 { font-size: 14px !important; }
+            .text-slate-500 { font-size: 15px !important; }
+            button { font-size: 16px !important; }
+            input, textarea { font-size: 16px !important; }
+            p { line-height: 1.6 !important; }
+        }
+            </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col">
+
+<div id="app" v-cloak class="h-full w-full flex flex-col relative">
+    
+
+    <transition name="page" mode="out-in">
+        <div v-if="currentView === 'home'" key="home" class="flex flex-col h-full bg-[#F8FAFC]">
+            
+
+            <header class="relative bg-white pb-6 pt-safe-top overflow-hidden shadow-[0_4px_20px_-12px_rgba(0,0,0,0.1)] z-10">
+
+                <div class="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-teal-50/80 to-transparent z-0"></div>
+                
+                <div class="relative z-10 px-6 pt-10 flex items-start justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1 opacity-80">
+                            <span class="w-1 h-3 bg-teal-500 rounded-full"></span>
+                            <p class="text-teal-700 font-bold text-[10px] tracking-widest uppercase">Patient Voice</p>
+                        </div>
+                        <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight leading-tight">三江县人民医院<br/>意见反馈中心</h1>
+                        <p class="text-xs text-slate-500 mt-1 font-medium">聆听您的心声 · 共建美好医疗</p>
+                    </div>
+                    <div class="w-16 h-16 bg-white rounded-2xl shadow-sm p-1.5 flel items-center justify-center border border-slate-50">
+                        <img src="./logo.png" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </header>
+
+
+            <main class="flex-1 px-5 -mt-4 space-y-4 overflow-y-auto pb-8 z-10 pt-6">
+                
+
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 shrink-0 text-sm mt-0.5">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-700 text-xm">尊敬的患者/家属</h3>
+                        <p class="text-[14px] text-slate-400 mt-1 leading-relaxed text-justify">
+                            您的每一条建议都是我们改进的动力。本平台严格执行匿名保护机制，请放心反馈。
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="grid grid-cols-1 gap-4">
+                    
+
+                    <div @click="switchView('commendation')" class="bg-white rounded-2xl p-0 shadow-sm border border-slate-100 tap-card cursor-pointer overflow-hidden group relative">
+                        <div class="absolute right-0 top-0 w-24 h-24 bg-emerald-50 rounded-bl-full -mr-4 -mt-4 opacity-50 group-hover:scale-110 transition-transform"></div>
+                        <div class="flex items-center h-24 relative z-10">
+                            <div class="w-20 h-full flex items-center justify-center text-emerald-500 text-3xl pl-2">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center shadow-inner">
+                                    <i class="fa-solid fa-thumbs-up"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 pr-5 py-4 pl-2">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h2 class="text-xl font-black text-slate-800">我要表扬</h2>
+                                    <i class="fa-solid fa-arrow-right text-slate-200 text-xs group-hover:text-emerald-400 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                                <p class="text-sm text-slate-400 font-medium">认可医护服务 / 传递温暖与感动</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div @click="switchView('complaint')" class="bg-white rounded-2xl p-0 shadow-sm border border-slate-100 tap-card cursor-pointer overflow-hidden group relative">
+                        <div class="absolute right-0 top-0 w-24 h-24 bg-orange-50 rounded-bl-full -mr-4 -mt-4 opacity-50 group-hover:scale-110 transition-transform"></div>
+                        <div class="flex items-center h-24 relative z-10">
+                            <div class="w-20 h-full flex items-center justify-center text-orange-500 text-3xl pl-2">
+                                <div class="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center shadow-inner">
+                                    <i class="fa-solid fa-clipboard-list"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 pr-5 py-4 pl-2">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h2 class="text-xl font-black text-slate-800">我要投诉</h2>
+                                    <i class="fa-solid fa-arrow-right text-slate-200 text-xs group-hover:text-orange-400 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                                <p class="text-sm text-slate-400 font-medium">服务态度 / 流程建议 / 环境设施</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="pt-2">
+                    <a href="tel:0772-8616278" class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl p-1 shadow-lg shadow-blue-500/20 tap-card block">
+                        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 flex items-center justify-between">
+                            <div class="flex items-center gap-4 text-white">
+                                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md border border-white/20">
+                                    <i class="fa-solid fa-phone-volume animate-pulse"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-xm leading-tight">电话反馈</h3>                              <p class="text-[13px] text-blue-100 opacity-90 mt-0.5">0772-8616278 (点击拨打)</p>
+                                </div>
+                            </div>
+                            <span class="bg-white text-blue-600 text-[13px] font-bold px-3 py-1.5 rounded-full shadow-sm">立即联系</span>
+                        </div>
+                    </a>
+                </div>
+
+
+                <footer class="mt-4 pb-8 flex flex-col items-center gap-3">
+                    
+                    <div class="healing-border">
+                        <div class="healing-border-content flex items-center gap-2 px-6 py-4 rounded-full bg-gradient-to-r from-slate-50 to-white shadow-lg backdrop-blur-sm">
+                            <i class="fa-solid fa-shield-halved text-teal-600 text-base"></i>
+                            <span class="text-[16px] text-slate-700 font-semibold tracking-wide">严格保护您的个人隐私信息</span>
+                        </div>
+                    </div>
+
+
+                    <div class="text-center space-y-2 opacity-70">
+                        <p class="text-[13px] text-slate-500 font-medium tracking-wider">© 2025 三江侗族自治县人民医院</p>
+                        <div class="flex items-center justify-center gap-2 text-[10px] text-slate-400 font-normal">
+                            <span>技术支持: Shin吴允信</span>
+                            <span class="w-px h-2.5 bg-slate-400"></span>
+                            <span>All Rights Reserved</span>
+                            <span class="w-px h-2.5 bg-slate-300"></span>
+                            <span>v1.1.0</span>
+                        </div>
+                    </div>
+                </footer>
+            </main>
+        </div>
+    </transition>
+
+
+    <transition name="page" mode="out-in">
+        <div v-if="currentView !== 'home' && !submitted" key="form" class="flex flex-col h-full bg-[#F5F7FA]">
+            
+
+            <div class="nav-glass h-14 px-4 flex items-center justify-between shrink-0 z-30 sticky top-0">
+                <button @click="handleBackNavigation" 
+                    :class="[
+                        'back-button', 
+                        currentView === 'commendation' ? 'theme-emerald' : 'theme-orange',
+                        { 'animate-pulse': showBackHint }
+                    ]"
+                    :style="{ animationDelay: showBackHint ? '0.5s' : '0s' }">
+                    <i class="fa-solid fa-arrow-left back-icon"></i>
+                </button>
+                <div class="font-bold text-lg text-slate-800 tracking-wide">
+                    {{ currentView === 'commendation' ? '填写表扬信' : '填写投诉单' }}
+                </div>
+                <div class="w-10"></div>
+            </div>
+
+
+            <div class="flex-1 overflow-y-auto p-4 space-y-4 pb-32">
+                
+
+                <div class="rounded-xl p-4 flex items-start gap-3 border" :class="themeClass.bannerBg">
+                    <i class="fa-solid mt-0.5 text-sm" :class="[themeClass.icon, currentView === 'commendation' ? 'fa-heart' : 'fa-info-circle']"></i>
+                    <p class="text-sm leading-relaxed font-medium" :class="themeClass.textDark">
+                        {{ currentView === 'commendation' 
+                            ? '感谢您的认可！您的心意将第一时间传达给医护团队，这份温暖是我们不断前行的最大动力。' 
+                            : '我们非常重视您的反馈。我们会对投诉内容进行认真核实与处理，并严格保护您的隐私信息。' }}
+                    </p>
+                </div>
+
+                <form @submit.prevent="submitForm" class="space-y-4">
+                    
+
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-100 space-y-5">
+
+                        <div>
+                            <label class="block text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">涉及科室 <span class="text-red-400">*</span></label>
+                            <div @click="showDeptModal = true" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3.5 flex justify-between items-center cursor-pointer tap-card transition-colors" :class="{'bg-white !border-current': form.department, [themeClass.text]: form.department}">
+                                <span class="font-bold text-sm" :class="form.department ? themeClass.text : 'text-slate-400 font-normal'">
+                                    {{ form.department || '点击选择科室' }}
+                                </span>
+                                <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">对象角色 <span class="text-red-400">*</span></label>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" v-for="role in roles" :key="role" 
+                                    @click="form.targetRole = role"
+                                    class="px-3 py-2 rounded-lg text-sm font-bold transition-all border border-transparent tap-card"
+                                    :class="form.targetRole === role ? [themeClass.bg, 'text-white shadow-md'] : 'bg-slate-50 text-slate-600 border-slate-200'">
+                                    {{ role }}
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div v-if="currentView === 'commendation'" class="animate__animated animate__fadeIn">
+                            <label class="block text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">TA的名字</label>
+                            <input type="text" v-model="form.targetName" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm outline-none focus:bg-white transition-all placeholder-slate-400 text-slate-800" :class="themeClass.ring" placeholder="如：张医生 (选填)">
+                        </div>
+                    </div>
+
+
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+                        <label class="block text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">内容 <span class="text-red-400">*</span></label>
+                        <textarea v-model="form.description" rows="5" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-4 text-sm outline-none focus:bg-white transition-all resize-none placeholder-slate-400 text-slate-800" :class="themeClass.ring" :placeholder="currentView === 'commendation' ? '请输入具体时间...' : '请描述具体的时间、地点及经过，方便我们核实...'"></textarea>
+                    </div>
+
+
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+                        <div class="flex justify-between items-center mb-3">
+                            <label class="text-sm font-bold text-slate-400 uppercase tracking-wider">联系方式</label>
+                            <span class="text-sm bg-slate-100 text-slate-400 px-1.5 py-0.5 rounded font-medium">选填 · 仅用于反馈结果</span>
+                        </div>
+                        <div class="space-y-3">
+                            <input type="text" v-model="form.submitterName" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm outline-none focus:bg-white transition-all placeholder-slate-400" :class="themeClass.ring" placeholder="您的姓名">
+                            <input type="tel" v-model="form.submitterPhone" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm outline-none focus:bg-white transition-all placeholder-slate-400" :class="themeClass.ring" placeholder="手机号码">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="absolute bottom-0 left-0 w-full bg-white/95 backdrop-blur border-t border-slate-100 px-6 py-4 pb-8 z-30">
+                <button @click="submitForm" :disabled="loading" class="w-full h-12 rounded-xl text-white font-bold text-base shadow-lg flex items-center justify-center gap-2 tap-card disabled:opacity-50 disabled:scale-100 transition-all" :class="[themeClass.bg, themeClass.shadow]">
+                    <span v-if="loading"><i class="fa-solid fa-circle-notch fa-spin"></i> 提交中...</span>
+                    <span v-else>确认提交</span>
+                </button>
+            </div>
+        </div>
+    </transition>
+
+
+    <transition name="page">
+        <div v-if="submitted" class="absolute inset-0 z-50 bg-white flex flex-col items-center justify-center p-8 text-center">
+            <div class="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-6 animate__animated animate__zoomIn">
+                <i class="fa-solid fa-check text-emerald-500 text-3xl"></i>
+            </div>
+            <h2 class="text-2xl font-black text-slate-800 mb-2 animate__animated animate__fadeInUp">提交成功</h2>
+            <p class="text-slate-400 text-sm mb-12 animate__animated animate__fadeInUp delay-100 max-w-xs mx-auto leading-relaxed">感谢您的反馈！您的声音对我们至关重要，祝您及家人身体健康。</p>
+            <button @click="resetForm" class="w-40 h-11 bg-slate-100 text-slate-600 font-bold rounded-xl tap-card animate__animated animate__fadeInUp delay-200 text-sm hover:bg-slate-200">
+                返回首页
+            </button>
+        </div>
+    </transition>
+
+
+    <div v-if="showDeptModal" class="fixed inset-0 z-50">
+        <div class="absolute inset-0 bg-slate-900/30 backdrop-blur-[3px] transition-opacity" @click="showDeptModal = false"></div>
+        <transition name="drawer" appear>
+            <div class="absolute bottom-0 left-0 w-full bg-white rounded-t-[1.5rem] h-[85vh] flex flex-col shadow-[0_-10px_40px_rgba(0,0,0,0.1)] overflow-hidden">
+
+                <div class="flex justify-between items-center px-5 py-4 border-b border-slate-100 bg-white z-20 shrink-0">
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-800">选择科室</h3>
+                        <p class="text-sm text-slate-400 mt-0.5">请选择您就诊或反馈的科室</p>
+                    </div>
+                    <button @click="showDeptModal = false" class="w-9 h-9 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+                
+                <div class="flex-1 flex overflow-hidden bg-[#F8FAFC]">
+                    <div class="w-[6.5rem] bg-white overflow-y-auto hide-scrollbar shrink-0 pb-10">
+                        <div v-for="(items, group) in deptGroups" :key="group" 
+                             @click="scrollToGroup(group)"
+                             class="px-3 py-5 text-sm font-bold text-center leading-relaxed transition-all cursor-pointer relative"
+                             :class="activeGroup === group ? [themeClass.text, 'bg-[#F8FAFC]'] : 'text-slate-400 hover:text-slate-600'">
+                            {{ group }}
+
+                            <div v-if="activeGroup === group" class="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 rounded-r-full transition-all" :class="themeClass.bg"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 overflow-y-auto px-4 pb-20 scroll-smooth relative" id="dept-list" @scroll="onScroll">
+                        <div v-for="(items, group) in deptGroups" :key="group" :id="'group-'+group" class="mb-6">
+                            
+                            <div class="sticky top-0 z-10 bg-[#F8FAFC]/95 backdrop-blur-sm py-3 mb-2 flex items-center">
+                                <span class="w-1.5 h-1.5 rounded-full mr-2" :class="themeClass.bg"></span>
+                                <h4 class="text-sm font-bold text-slate-700">{{ group }}</h4>
+                            </div>
+
+
+                            <div class="grid grid-cols-1 gap-3">
+                                <button v-for="item in items" :key="item" @click="selectDept(item)" 
+                                    class="w-full text-left px-5 py-4 rounded-xl text-sm font-bold transition-all flex justify-between items-center tap-card group"
+                                    :class="form.department === item ? ['bg-white shadow-md ring-1 ring-inset', themeClass.ring] : 'bg-white border border-slate-100 shadow-sm text-slate-600'">
+                                    
+                                    <span :class="form.department === item ? themeClass.text : 'group-hover:text-slate-900'">{{ item }}</span>
+                                    
+                                    <div class="w-5 h-5 rounded-full flex items-center justify-center transition-colors"
+                                         :class="form.department === item ? [themeClass.bg, 'text-white'] : 'bg-slate-50 text-slate-200'">
+                                        <i class="fa-solid fa-check text-[10px]"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        
+
+                        <div class="h-12 flex items-center justify-center text-sm text-slate-300">
+                            - 到底了 -
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
+    </div>
+
+</div>
+
+<script>
+    const { createApp, reactive, ref, computed } = Vue;
+    createApp({
+        setup() {
+            const currentView = ref('home');
+            const showDeptModal = ref(false);
+            const loading = ref(false);
+            const submitted = ref(false);
+            const activeGroup = ref('门诊及收费');
+            const isClickScrolling = ref(false);
+            const showBackHint = ref(false);
+            const backNavigationTimer = ref(null);
+
+            const deptGroups = {
+                "门诊及收费": ["门诊部", "门诊收费处", "住院收费处", "急诊医学科", "医保办"],
+                "外科系统": ["普通外科", "泌尿外科", "神经外科", "骨科一病区", "骨科二病区", "麻醉科"],
+                "内科系统": ["呼吸内科", "心血管内科", "消化内科", "神经内科", "肿瘤科", "感染性疾病科"],
+                "妇儿科室": ["妇产科", "儿科"],
+                "专科门诊": ["口腔科", "眼科", "耳鼻喉科", "中医科", "康复科", "体检科"],
+                "医技科室": ["检验科", "血库", "超声科", "放射科", "药剂科"],
+                "重症监护": ["重症医学科"],
+                "其他科室": ["保卫科", "行政后勤", "其他"]
+            };
+            const roles = ['医生', '护士', '医护团队', '技师', '药师', '后勤人员', '管理人员', '其他'];
+
+            const form = reactive({
+                department: '', targetRole: '', targetName: '', description: '', submitterName: '', submitterPhone: ''
+            });
+
+            const themeClass = computed(() => {
+                const isCommend = currentView.value === 'commendation';
+                return {
+                    text: isCommend ? 'text-emerald-600' : 'text-orange-600',
+                    textDark: isCommend ? 'text-emerald-800' : 'text-orange-800',
+                    bg: isCommend ? 'bg-emerald-500' : 'bg-orange-500',
+                    bannerBg: isCommend ? 'bg-emerald-50/50 border-emerald-100' : 'bg-orange-50/50 border-orange-100',
+                    ring: isCommend ? 'focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-slate-800' : 'focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-slate-800',
+                    shadow: isCommend ? 'shadow-emerald-500/30' : 'shadow-orange-500/30',
+                    icon: isCommend ? 'text-emerald-500' : 'text-orange-500'
+                };
+            });
+
+            const switchView = (view) => {
+                Object.keys(form).forEach(k => form[k] = '');
+                currentView.value = view;
+                
+                if (view !== 'home') {
+                    showBackHint.value = true;
+                    if (backNavigationTimer.value) {
+                        clearTimeout(backNavigationTimer.value);
+                    }
+                    backNavigationTimer.value = setTimeout(() => {
+                        showBackHint.value = false;
+                    }, 3000);
+                } else {
+                    showBackHint.value = false;
+                }
+            };
+
+            const handleBackNavigation = () => {
+                if (navigator.vibrate) {
+                    navigator.vibrate(10);
+                }
+
+                if (backNavigationTimer.value) {
+                    clearTimeout(backNavigationTimer.value);
+                    backNavigationTimer.value = null;
+                }
+
+                Object.keys(form).forEach(k => form[k] = '');
+                currentView.value = 'home';
+                showBackHint.value = false;
+            };
+
+            const selectDept = (dept) => {
+                form.department = dept;
+                showDeptModal.value = false;
+            };
+
+            const scrollToGroup = (group) => {
+                activeGroup.value = group;
+                isClickScrolling.value = true;
+                const el = document.getElementById('group-' + group);
+                if(el) el.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => { isClickScrolling.value = false; }, 500);
+            };
+
+            const onScroll = (e) => {
+                if (isClickScrolling.value) return;
+                const container = e.target;
+                const scrollTop = container.scrollTop;
+                const offset = 20; 
+                const groups = Object.keys(deptGroups);
+                for (const group of groups) {
+                    const el = document.getElementById('group-' + group);
+                    if (el && (el.offsetTop - container.offsetTop <= scrollTop + offset)) {
+                        activeGroup.value = group;
+                    }
+                }
+            };
+
+            const submitForm = async () => {
+                if (!form.department || !form.targetRole || !form.description) {
+                    alert('请填写红色 * 号的必填项');
+                    return;
+                }
+                loading.value = true;
+                try {
+                    const res = await fetch('/api/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ type: currentView.value, ...form })
+                    });
+                    const result = await res.json();
+                    if (result.success) submitted.value = true;
+                    else alert('提交失败: ' + (result.message || '未知错误'));
+                } catch (e) { alert('网络连接错误'); } 
+                finally { loading.value = false; }
+            };
+
+            const resetForm = () => {
+                submitted.value = false;
+                currentView.value = 'home';
+            };
+
+            return { 
+                currentView, deptGroups, roles, form, showDeptModal, loading, submitted, activeGroup,
+                showBackHint, switchView, submitForm, resetForm, selectDept, scrollToGroup, onScroll, 
+                themeClass, handleBackNavigation
+            };
+        }
+    }).mount('#app');
+</script>
+</body>
+</html>
